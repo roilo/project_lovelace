@@ -1,6 +1,3 @@
-### NOTES
-# UI to be updated
-
 import random
 import copy
 
