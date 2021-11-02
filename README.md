@@ -1,5 +1,5 @@
 # Project Lovelace
-My very first programming project (Created in 2015, last major update in 2016).
+My very first programming project (Created in February 2015, last major update in January 2016).
 
 **This project is a text-based gladiatorial combat game made in Python.**
 
@@ -19,4 +19,4 @@ Locate the directory of `Lovelace.py` in console and type `python Lovelace.py`.
 ### Via executable file
 1. Install `pyinstaller`. [Follow the instructions in this link](https://www.pyinstaller.org/).
 2. Create executable file by locating the directory of `Lovelace.py` in console and typing `pyinstaller Lovelace.py`.
-3. Locate `Lovelace.exe` in App Launcher and open the file.
+3. Locate `Lovelace.out` in App Launcher and open the file.
