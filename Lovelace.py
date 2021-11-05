@@ -426,10 +426,10 @@ def animated_loading(*texts, end = " ", position = 0, duration = 3):
 
     Notes
     -----
-    In Examples, ``*`` means specified string is affected,
+    In Examples, `*` means specified string is affected,
         in actual use all strings will be printed.
     To print numbers, the parameter must be converted to string first
-        when calling the function.
+        when calling the function, e.g. `animated_loading(str(42))`.
     """
 
     # positive index only
@@ -607,6 +607,92 @@ def result_move(player, enemy, player_is_success, enemy_is_success):
         animated_loading(f"{player.name} is...",
                          "doing nothing?", position = -1)
 
+def end_game(player, enemy):
+    """Prints end game messages.
+
+    Parameters
+    ----------
+    player : Player
+        Instantiated Player class
+    enemy : Enemy
+        Instantiated Enemy class
+
+    Returns
+    -------
+    True|False : bool
+        Determines if main loop continues
+    """
+    # Draw
+    if player.hp <= 0 and enemy.hp <= 0:
+        print()
+        animated_loading(f"Both {player.name} and {enemy.name} lay "
+                         + "dead on the ground. What a draw!")
+        print("The crowd is shocked by the result!")
+        animated_loading(
+            f"{'-' * len('The crowd is shocked by the result!')}",
+            duration = 6
+        )
+        print("The battle has ended...")
+        time.sleep(1)
+        print("Everyone has left...")
+        time.sleep(1)
+        animated_loading(f"Except the corpses of {player.name} and "
+            + f"{enemy.name}."
+        )
+        time.sleep(1)
+    # Player 1 wins
+    elif enemy.hp <= 0:
+        print()
+        animated_loading(f"Congratulations {player.name}",
+                         "for overpowering", f"{enemy.name},",
+                         "whose prowess was outmatched up until now!",
+                         position = 2)
+        print(f"The crowd cheers for the victory of {player.name}!")
+        animated_loading(
+            f"{'-' * (37 + len(player.name))}",
+            duration = 6
+        )
+        print("The battle has ended...")
+        time.sleep(1)
+        print("Everyone has left...")
+        time.sleep(1)
+        animated_loading(f"Except {player.name} and"
+            + f"the corpse of {enemy.name}."
+        )
+        time.sleep(1)
+        print(f"As {player.name} contemplates, a realization hits:")
+        time.sleep(1)
+    # Player 2 wins
+    elif player.hp <= 0:
+        print()
+        animated_loading(f"{enemy} has won the battle!")
+        print(f"The crowd cheers as the corpse of {player.name}",
+            "falls to the ground!")
+        animated_loading(
+            f"{'-' * (54 + len(player.name))}",
+            duration = 6
+        )
+        print("The battle has ended...")
+        time.sleep(1)
+        print("Everyone has left...")
+        time.sleep(1)
+        animated_loading(f"Except {enemy.name} and"
+            + f"the corpse of {player.name}.")
+        time.sleep(1)
+        print(f"As {enemy.name} contemplates, a realization hits:")
+        time.sleep(1)
+    # Game finally ends
+    if player.hp <= 0 or enemy.hp <= 0:
+        print("This is just one of the fights in the arena.")
+        time.sleep(1)
+        print("There are more battles to come...")
+        time.sleep(1)
+        print("Better prepare for the next.")
+        animated_loading(f"{'-' * len('Better prepare for the next.')}")
+        time.sleep(1)
+        return False
+    return True
+
 enemy_name = ["Batman", "Gandalf", "Magikarp"]
 
 player1 = Player(input("Input Player Name: ")) # Ask for player name
@@ -657,7 +743,7 @@ while is_running:
         print()
 
     # Enemy chooses move
-    player2.move = player2.enemy_choice()
+    player2.move = player2.enemy_choice()[0]
 
     # Randomly select who goes first
     first_turn = random.getrandbits(1) # 0 = Enemy, 1 = Player
@@ -737,84 +823,4 @@ while is_running:
     status_check(player2)
 
     ### End game
-    # Draw
-    if player1.hp <= 0 and player2.hp <= 0:
-        print()
-        animated_loading(f"Both {player1.name} and {player2.name} lay "
-                         + "dead on the ground. What a draw!")
-        print("The crowd is shocked by the result!")
-        animated_loading(
-            f"{'-' * len('The crowd is shocked by the result!')}",
-            duration = 6
-        )
-        print("The battle has ended...")
-        time.sleep(1)
-        print("Everyone has left...")
-        time.sleep(1)
-        animated_loading(f"Except the corpses of {player1.name} and "
-            + f"{player2.name}."
-        )
-        time.sleep(1)
-        print("This is just one of the fights in the arena.")
-        time.sleep(1)
-        print("There are more battles to come...")
-        time.sleep(1)
-        print("Better prepare for the next.")
-        animated_loading(f"{'-' * len('Better prepare for the next.')}")
-        time.sleep(1)
-        is_running = False
-    # Player 1 wins
-    elif player2.hp <= 0:
-        print()
-        animated_loading(f"Congratulations {player1.name}",
-                         "for overpowering", f"{player2.name},",
-                         "whose prowess was outmatched up until now!",
-                         position = 2)
-        print(f"The crowd cheers for the victory of {player1.name}!")
-        animated_loading(
-            f"{'-' * (37 + len(player1.name))}",
-            duration = 6
-        )
-        print("The battle has ended...")
-        time.sleep(1)
-        print("Everyone has left...")
-        time.sleep(1)
-        animated_loading(f"Except {player1.name} and"
-            + f"the corpse of {player2.name}."
-        )
-        time.sleep(1)
-        print(f"As {player1.name} contemplates, a realization hits:",
-              "this is just one of the fights in the arena.")
-        time.sleep(1)
-        print("There are more battles to come...")
-        time.sleep(1)
-        print("Better prepare for the next.")
-        animated_loading(f"{'-' * len('Better prepare for the next.')}")
-        time.sleep(1)
-        is_running = False
-    # Player 2 wins
-    elif player1.hp <= 0:
-        print()
-        animated_loading(f"{player2} has won the battle!")
-        print(f"The crowd cheers as the corpse of {player1.name}",
-            "falls to the ground!")
-        animated_loading(
-            f"{'-' * (54 + len(player1.name))}",
-            duration = 6
-        )
-        print("The battle has ended...")
-        time.sleep(1)
-        print("Everyone has left...")
-        time.sleep(1)
-        animated_loading(f"Except {player2.name} and"
-            + f"the corpse of {player1.name}.")
-        time.sleep(1)
-        print(f"As {player2.name} contemplates, a realization hits:",
-              "this is just one of the fights in the arena.")
-        time.sleep(1)
-        print("There are more battles to come...")
-        time.sleep(1)
-        print("Better prepare for the next.")
-        animated_loading(f"{'-' * len('Better prepare for the next.')}")
-        time.sleep(1)
-        is_running = False
+    is_running = end_game(player1, player2)
